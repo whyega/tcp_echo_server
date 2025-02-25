@@ -4,7 +4,9 @@
 #include <winsock2.h>
 #include <ws2tcpip.h>
 
+#include <fstream>
 #include <iostream>
+#include <iterator>
 
 #pragma comment(lib, "ws2_32.lib")
 
@@ -30,8 +32,16 @@ int main() {
     return 1;
   }
 
-  const char* message = "Hello, TCP Server!";
-  send(socket_handle, message, strlen(message), 0);
+  std::ifstream file("assets/index.html");
+  if (!file.is_open()) {
+    std::cout << "File not exist" << std::endl;
+    return 1;
+  }
+
+  std::string data((std::istreambuf_iterator<char>(file)),
+                   std::istreambuf_iterator<char>());
+
+  send(socket_handle, data.c_str(), data.size(), 0);
 
   closesocket(socket_handle);
   WSACleanup();

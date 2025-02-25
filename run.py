@@ -8,6 +8,7 @@ def compile():
   return subprocess.run(["cmake", "--build", "build", "--config", "Debug"]).returncode == 0
 
 def run():
+  # todo
   path = os.path.join("build", "tcp_echo_server")
   return subprocess.run([path, "-h"])
 

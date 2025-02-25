@@ -9,7 +9,7 @@ int main(int argc, char* argv[]) {
   cxxopts::Options options("tcp_echo_server", "TCP echo server");
   auto option_adder = options.add_options()("h, help", "Print help")(
       "p, port", "Network port", cxxopts::value<std::uint16_t>())(
-      "m, max_connection", "Maximum number of simultaneous connections",
+      "m, max_connections", "Maximum number of simultaneous connections",
       cxxopts::value<std::size_t>())("b, buffer_size",
                                      "Maximum buffer size (bytes)",
                                      cxxopts::value<std::size_t>())(

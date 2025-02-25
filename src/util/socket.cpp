@@ -102,11 +102,12 @@ Socket Socket::Accept() {
   return client_socket;
 }
 
-std::vector<std::uint8_t> Socket::Read(const std::size_t buffer_size) {
+std::vector<std::uint8_t> Socket::Read(const std::size_t buffer_size,
+                                       recv_flags flags) {
   std::vector<std::uint8_t> buffer(buffer_size);
   auto recv_size =
       recv(native_socket_handle_, reinterpret_cast<char*>(buffer.data()),
-           buffer.size(), 0);
+           buffer.size(), static_cast<int>(flags));
   if (recv_size == kSocketError) {
     throw std::runtime_error("Error read from socket");
   }
@@ -115,10 +116,10 @@ std::vector<std::uint8_t> Socket::Read(const std::size_t buffer_size) {
   return buffer;
 }
 
-void Socket::Write(const std::vector<std::uint8_t>& buffer) {
+void Socket::Write(const std::vector<std::uint8_t>& buffer, send_flags flags) {
   auto send_size =
       send(native_socket_handle_, reinterpret_cast<const char*>(buffer.data()),
-           buffer.size(), 0);
+           buffer.size(), static_cast<int>(flags));
   if (send_size == kSocketError) {
     throw std::runtime_error("Error write to socket");
   }

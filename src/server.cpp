@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "util/socket.hpp"
+#include "util/string.hpp"
 
 Server::Server(std::uint16_t port, std::size_t max_connections,
                std::size_t mtu_size, std::size_t timeout)
@@ -24,7 +25,21 @@ Server::Server(std::uint16_t port, std::size_t max_connections,
 
 Server::~Server() {}
 
-void Server::HandlePacket(std::vector<std::uint8_t>) {}
+void Server::HandlePacket(util::Socket& client_socket,
+                          std::vector<std::uint8_t> packet) {
+  auto data = std::string(packet.begin(), packet.end());
+  spdlog::info("Receive buffer[{}]:\n{}", packet.size(), data.c_str());
+
+  auto formated = util::replace_all(data, "<", "&lt;");
+  formated = util::replace_all(formated, ">", "&gt;");
+  formated = util::replace_all(formated, "&", "&amp;");
+  formated = util::replace_all(formated, "'", "&apos;");
+  formated = util::replace_all(formated, "\"", "&lt;");
+
+  spdlog::info("Formated: {}", formated);
+
+  client_socket.Write({data.begin(), data.end()});
+}
 
 void Server::Start() {
   server_socket_.Listen();
@@ -35,8 +50,6 @@ void Server::Start() {
     spdlog::info("New connection");
 
     auto packet = client_socket.Read(mtu_size_);
-    spdlog::info("Receive buffer[{}]: {}", packet.size(),
-                 std::string(packet.begin(), packet.end()).c_str());
-    HandlePacket(packet);
+    HandlePacket(client_socket, packet);
   }
 }

@@ -12,6 +12,7 @@ list(APPEND TCP_ECHO_SERVER_SRC
   src/main.cpp
   src/server.cpp
   src/util/socket.cpp
+  src/util/string.cpp
 )
 add_executable(tcp_echo_server ${TCP_ECHO_SERVER_SRC})
 target_link_libraries(tcp_echo_server PRIVATE

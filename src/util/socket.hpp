@@ -11,6 +11,8 @@ class Socket {
   enum class family_t { inet = 2 };
   enum class specification_t { stream = 1 };
   enum class protocol_t { tcp, udp };
+  enum class recv_flags { none = 0 };
+  enum class send_flags { none = 0 };
 
   static constexpr std::size_t kMaxBacklog = 0x7FFFFFFF;
 
@@ -39,7 +41,9 @@ class Socket {
   void Listen(std::size_t backlog = util::Socket::kMaxBacklog);
   Socket Accept();
 
-  std::vector<std::uint8_t> Read(const std::size_t buffer_size);
-  void Write(const std::vector<std::uint8_t>& buffer);
+  std::vector<std::uint8_t> Read(const std::size_t buffer_size,
+                                 recv_flags flags = recv_flags::none);
+  void Write(const std::vector<std::uint8_t>& buffer,
+             send_flags flags = send_flags::none);
 };
 }  // namespace util
