@@ -15,6 +15,7 @@ class Socket {
   static constexpr std::size_t kMaxBacklog = 0x7FFFFFFF;
 
  private:
+  enum class option { timeout };
   static constexpr native_socket_handle_t kSocketError = -1;
 
   native_socket_handle_t native_socket_handle_{};
@@ -34,6 +35,7 @@ class Socket {
   native_socket_handle_t& Get();
 
   void Bind(family_t family, std::string host, std::uint16_t port);
+  void SetTimeout(std::size_t timeout);
   void Listen(std::size_t backlog = util::Socket::kMaxBacklog);
   Socket Accept();
 

@@ -1,6 +1,9 @@
 #include "socket.hpp"
 
+#include <winsock2.h>
+
 #include <cstdint>
+#include <iostream>
 #include <stdexcept>
 #include <vector>
 
@@ -63,7 +66,7 @@ Socket::native_socket_handle_t& Socket::Get() { return native_socket_handle_; }
 void Socket::Bind(family_t family, std::string host, std::uint16_t port) {
   sockaddr_in server_address;
   server_address.sin_family = static_cast<int>(family);
-  server_address.sin_port = port;
+  server_address.sin_port = htons(port);
   if (inet_pton(static_cast<int>(family), host.c_str(),
                 &server_address.sin_addr) == kSocketError) {
     throw std::runtime_error("Error inet_pton");
@@ -74,6 +77,8 @@ void Socket::Bind(family_t family, std::string host, std::uint16_t port) {
     throw std::runtime_error("Error binding socket");
   }
 }
+
+void Socket::SetTimeout(std::size_t timeout) {}
 
 void Socket::Listen(std::size_t backlog) {
   if (listen(native_socket_handle_, backlog) == kSocketError) {

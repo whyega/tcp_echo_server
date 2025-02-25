@@ -25,10 +25,10 @@ int main(int argc, char* argv[]) {
     // if (parse_result.count()) {
     // }
     try {
-      Server server(8814);
+      Server server(8814, 2, 1024, 5000);
       server.Start();
     } catch (std::exception& e) {
-      spdlog::error("Error intitialize server: {}", e.what());
+      spdlog::error("Server error: {}", e.what());
     }
   } catch (cxxopts::exceptions::exception& e) {
     spdlog::error(e.what());
