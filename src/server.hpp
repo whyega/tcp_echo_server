@@ -6,6 +6,7 @@
 
 class Server {
  private:
+  static constexpr std::size_t kMTUSize = 1024;
   util::Socket server_socket_;
 
  public:

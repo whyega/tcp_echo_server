@@ -1,7 +1,8 @@
 #pragma once
 
 #include <cstdint>
-#include <string_view>
+#include <string>
+#include <vector>
 
 namespace util {
 class Socket {
@@ -11,10 +12,15 @@ class Socket {
   enum class specification_t { stream = 1 };
   enum class protocol_t { tcp, udp };
 
+  static constexpr std::size_t kMaxBacklog = 0x7FFFFFFF;
+
  private:
   static constexpr native_socket_handle_t kSocketError = -1;
 
   native_socket_handle_t native_socket_handle_{};
+  family_t family_;
+  specification_t specification_;
+  protocol_t protocol_;
 
  public:
   Socket() = delete;
@@ -22,11 +28,16 @@ class Socket {
   Socket& operator=(const Socket&) = delete;
   Socket(family_t family, specification_t specification, protocol_t protocol);
   ~Socket();
-  Socket(const Socket&& other);
-  Socket& operator=(const Socket&& other);
+  Socket(Socket&& other);
+  Socket& operator=(Socket&& other);
 
-  void Bind(family_t family, std::string_view host, std::uint16_t port);
-  void Listen(std::size_t);
+  native_socket_handle_t& Get();
+
+  void Bind(family_t family, std::string host, std::uint16_t port);
+  void Listen(std::size_t backlog = util::Socket::kMaxBacklog);
   Socket Accept();
+
+  std::vector<std::uint8_t> Read(const std::size_t buffer_size);
+  void Write(const std::vector<std::uint8_t>& buffer);
 };
 }  // namespace util

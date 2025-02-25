@@ -1,5 +1,5 @@
+#include <cstdint>
 #include <cxxopts.hpp>
-#include <exception>
 #include <iostream>
 
 #include "server.hpp"
@@ -7,7 +7,13 @@
 
 int main(int argc, char* argv[]) {
   cxxopts::Options options("tcp_echo_server", "TCP echo server");
-  auto option_adder = options.add_options()("h, help", "Print help");
+  auto option_adder = options.add_options()("h, help", "Print help")(
+      "p, port", "Network port", cxxopts::value<std::uint16_t>())(
+      "m, max_connection", "Maximum number of simultaneous connections",
+      cxxopts::value<std::size_t>())("b, buffer_size",
+                                     "Maximum buffer size (bytes)",
+                                     cxxopts::value<std::size_t>())(
+      "t, timeout", "Client response timeout", cxxopts::value<std::size_t>());
 
   try {
     auto parse_result = options.parse(argc, argv);
@@ -16,6 +22,8 @@ int main(int argc, char* argv[]) {
       return 0;
     }
 
+    // if (parse_result.count()) {
+    // }
     try {
       Server server(8814);
       server.Start();
