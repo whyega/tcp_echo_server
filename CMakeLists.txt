@@ -4,7 +4,7 @@ project(tcp_echo_server)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(TCP_ECHO_SERVER_BUILD_TEST ON)
+option(TCP_ECHO_SERVER_BUILD_TEST "Build test (win_client)" OFF)
 
 add_subdirectory(vendor)
 

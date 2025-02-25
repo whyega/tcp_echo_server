@@ -2,7 +2,7 @@ import subprocess
 import os
 
 def config():
-  return subprocess.run(["cmake", "-B", "build"]).returncode == 0
+  return subprocess.run(["cmake", "-B", "build", "-DTCP_ECHO_SERVER_BUILD_TEST=ON"]).returncode == 0
   
 def compile():
   return subprocess.run(["cmake", "--build", "build", "--config", "Debug"]).returncode == 0
