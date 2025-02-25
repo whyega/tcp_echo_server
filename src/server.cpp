@@ -29,8 +29,7 @@ Server::Server(std::uint16_t port, std::size_t max_connections,
       max_connections_(max_connections),
       mtu_size_(mtu_size) {
   server_socket_.Bind(util::Socket::family_t::inet, "127.0.0.1", port);
-  // impl timeout
-  // server_socket_.SetTimeout(timeout);
+  server_socket_.SetTimeout(timeout);
   spdlog::info(
       "Server created (socket {}, port: {}, timeout: {}, max_connections {}, "
       "mtu_size {})",
