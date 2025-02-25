@@ -10,10 +10,9 @@ class Server {
  private:
   static constexpr std::size_t kMTUSize = 1024;
   util::Socket server_socket_;
-  std::size_t max_connections_;
-  std::size_t connectioins_count_;
-  std::size_t timeout_;
-  std::size_t mtu_size_;
+  std::size_t max_connections_{};
+  std::size_t connectioins_count_{};
+  std::size_t mtu_size_{};
 
   void HandlePacket(util::Socket& client_socket,
                     std::vector<std::uint8_t> packet);

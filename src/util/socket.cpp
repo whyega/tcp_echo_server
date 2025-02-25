@@ -3,7 +3,6 @@
 #include <winsock2.h>
 
 #include <cstdint>
-#include <iostream>
 #include <stdexcept>
 #include <vector>
 
@@ -78,7 +77,22 @@ void Socket::Bind(family_t family, std::string host, std::uint16_t port) {
   }
 }
 
-void Socket::SetTimeout(std::size_t timeout) {}
+void Socket::SetTimeout(std::size_t timeout) {
+#ifdef _WIN32
+  if (setsockopt(native_socket_handle_, SOL_SOCKET, SO_RCVTIMEO,
+                 (const char*)&timeout, sizeof(timeout)) != 0) {
+    throw std::runtime_error("Error set timeout");
+  }
+#else
+  timeval timeout;
+  timeout.tv_sec = timeout / 1000;
+  timeout.tv_usec = (timeout % 1000) * 1000;
+  if (setsockopt(socket, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout)) !=
+      0) {
+    throw std::runtime_error("Error set timeout");
+  }
+#endif
+}
 
 void Socket::Listen(std::size_t backlog) {
   if (listen(native_socket_handle_, backlog) == kSocketError) {

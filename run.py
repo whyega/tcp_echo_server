@@ -10,7 +10,7 @@ def compile():
 def run():
   # todo
   path = os.path.join("build", "tcp_echo_server")
-  return subprocess.run([path, "-h"])
+  return subprocess.run([path, "-p", "7777", "-m", "2", "-b", "1024", "-t", "5000"])
 
 def main():
   print("Configuring project:")
@@ -28,7 +28,3 @@ def main():
 
 if __name__ == "__main__":
   main()
-  
-    
-
-  
