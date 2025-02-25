@@ -8,7 +8,6 @@
 
 class Server {
  private:
-  static constexpr std::size_t kMTUSize = 1024;
   util::Socket server_socket_;
   std::size_t max_connections_{};
   std::size_t connectioins_count_{};
@@ -21,7 +20,7 @@ class Server {
   Server() = delete;
   Server(std::uint16_t port, std::size_t max_connections, std::size_t mtu_size,
          std::size_t timeout);
-  ~Server();
+  ~Server() = default;
 
   void Start();
 };

@@ -36,8 +36,6 @@ Server::Server(std::uint16_t port, std::size_t max_connections,
       server_socket_.Get(), port, timeout, max_connections, mtu_size);
 }
 
-Server::~Server() {}
-
 void Server::HandlePacket(util::Socket& client_socket,
                           std::vector<std::uint8_t> packet) {
   auto data = std::string(packet.begin(), packet.end());
