@@ -88,8 +88,8 @@ void Socket::SetTimeout(std::size_t timeout) {
   timeval tv;
   tv.tv_sec = timeout / 1000;
   tv.tv_usec = (timeout % 1000) * 1000;
-  if (setsockopt(native_socket_handle_, SOL_SOCKET, SO_RCVTIMEO, &timeout,
-                 sizeof(timeout)) != 0) {
+  if (setsockopt(native_socket_handle_, SOL_SOCKET, SO_RCVTIMEO, &tv,
+                 sizeof(tv)) != 0) {
     throw std::runtime_error("Error set timeout");
   }
 #endif
