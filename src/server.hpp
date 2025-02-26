@@ -14,7 +14,7 @@ class Server {
   std::size_t mtu_size_{};
 
   void HandlePacket(util::Socket& client_socket,
-                    std::vector<std::uint8_t> packet);
+                    std::vector<std::uint8_t>& packet);
 
  public:
   Server() = delete;

@@ -37,7 +37,7 @@ Server::Server(std::uint16_t port, std::size_t max_connections,
 }
 
 void Server::HandlePacket(util::Socket& client_socket,
-                          std::vector<std::uint8_t> packet) {
+                          std::vector<std::uint8_t>& packet) {
   auto data = std::string(packet.begin(), packet.end());
   spdlog::info("Receive buffer[{}]:\n{}", packet.size(), data.c_str());
 
